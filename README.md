@@ -40,8 +40,8 @@ Para executar este projeto, você precisará das seguintes ferramentas e tecnolo
 
 ## Instruções de Configuração
 
-1. Clone o repositório: `git clone https://github.com/seu-usuario/seu-projeto.git`
-2. Acesse o diretório: `cd seu-projeto`
+1. Clone o repositório: `git clone https://github.com/pedrobtenorio/InsuranceSystem`
+2. Acesse o diretório: `cd InsuranceSystem`
 3. Certifique-se de que o [Gradle](https://gradle.org/) esteja instalado em seu sistema. Se você não tiver o Gradle instalado, siga as etapas abaixo para configurar o projeto:
 
 ### Configurando o Projeto com o Gradle
@@ -64,3 +64,40 @@ Execute o projeto com o seguinte comando:
 
 O projeto estará disponível em `http://localhost:8080` por padrão.
 
+## Exemplos de Corpos de Requisição para Teste
+
+### POST Request Body
+
+```json
+{
+  "id": 1,
+  "customerId": {
+    "id": 1
+  },
+  "budget": 1500.00,
+  "creationDate": "2023-01-01",
+  "updatedAt": "2023-01-01",
+  "car": {
+    "id": 1
+  },
+  "isActive": true
+}
+```
+
+
+### PUT Request Body
+```json
+{
+  "id": 1,
+  "customerId": {
+    "id": 1
+  },
+  "budget": 1500.00,
+  "creationDate": "2023-01-01",
+  "updatedAt": "2023-01-01",
+  "car": {
+    "id": 2
+  },
+  "isActive": true
+}
+```

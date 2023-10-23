@@ -29,21 +29,8 @@ public class InsuranceService {
     }
 
     public Insurance createInsuranceBudget(Insurance insurance) {
-
-        //Load car and Customer
-        Optional<Car> optionalCar = carService.findById(insurance.getCar().getId());
-        if (optionalCar.isEmpty()) {
-            String errorMessage = "Car with ID " + insurance.getCar().getId() + " does not exist. Create the car first.";
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,errorMessage);
-        }
-
-        Optional<Customer> optionalCustomer = customerService.findById(insurance.getCar().getId());
-        if (optionalCustomer.isEmpty()) {
-            String errorMessage = "Customer ID " + insurance.getCustomer().getId() + " does not exist. Create the customer first.";
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,errorMessage);
-        }
-        insurance.setCustomer(optionalCustomer.get());
-        insurance.setCar(optionalCar.get());
+        insurance.setCustomer(loadCustomer(insurance));
+        insurance.setCar(loadCar(insurance));
         insurance.setBudget(calculateBudge(insurance));
 
         return insuranceRepository.save(insurance);
@@ -71,13 +58,13 @@ public class InsuranceService {
         }
 
         Insurance existingInsurance = optionalInsurance.get();
+
+        existingInsurance.setActive(updatedInsurance.isActive());
+        existingInsurance.setCar(loadCar(updatedInsurance));
+        existingInsurance.setCustomer(loadCustomer(updatedInsurance));
+        existingInsurance.setUpdatedAt(new Date());
         var baseBudget = calculateBudge(existingInsurance);
         existingInsurance.setBudget(baseBudget);
-        existingInsurance.setActive(updatedInsurance.isActive());
-        existingInsurance.setCar(updatedInsurance.getCar());
-        existingInsurance.setCustomer(updatedInsurance.getCustomer());
-        existingInsurance.setUpdatedAt(new Date());
-
         return insuranceRepository.save(existingInsurance);
     }
 
@@ -125,7 +112,22 @@ public class InsuranceService {
         insuranceRepository.deleteById(insuranceId);
     }
 
-
+    public Car loadCar(Insurance insurance) {
+        Optional<Car> optionalCar = carService.findById(insurance.getCar().getId());
+        if (optionalCar.isEmpty()) {
+            String errorMessage = "Car with ID " + insurance.getCar().getId() + " does not exist. Create the car first.";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,errorMessage);
+        }
+        return optionalCar.get();
+    }
+    public Customer loadCustomer(Insurance insurance) {
+        Optional<Customer> optionalCustomer = customerService.findById(insurance.getCar().getId());
+        if (optionalCustomer.isEmpty()) {
+            String errorMessage = "Customer ID " + insurance.getCustomer().getId() + " does not exist. Create the customer first.";
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, errorMessage);
+        }
+        return optionalCustomer.get();
+    }
 
 }
 
