@@ -1,0 +1,81 @@
+openapi: 3.0.0
+info:
+  title: Documentação da API de Seguros
+  version: 1.0.0
+  description: Documentação da API de Seguros do projeto
+
+paths:
+  /insurance/budget:
+    post:
+      summary: Criação de Orçamento de Seguro
+      description: Cria um novo orçamento de seguro com base nos dados fornecidos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Insurance'
+      responses:
+        '200':
+          description: Orçamento de seguro criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Insurance'
+        '404':
+          description: Carro ou motorista não encontrados
+
+
+  /insurance/{insuranceId}:
+    get:
+      summary: Obtenção de Detalhes do Seguro
+      description: Obtém os detalhes de um seguro com base no ID fornecido.
+      parameters:
+        - name: insuranceId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID do seguro
+      responses:
+        '200':
+          description: Detalhes do seguro obtidos com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Insurance'
+        '404':
+          description: Seguro não encontrado
+
+    put:
+      summary: Atualização de Seguro
+      description: Atualiza os detalhes de um seguro com base no ID fornecido.
+      parameters:
+        - name: insuranceId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID do seguro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Insurance'
+      responses:
+        '200':
+          description: Seguro atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Insurance'
+        '404':
+          description: Seguro não encontrado
+
+    delete:
+      summary: Exclusão de Seguro
+      description: Exclui um seguro com base no id
+      responses:
+        204:
+          description: Seguro excluido com sucesso.
